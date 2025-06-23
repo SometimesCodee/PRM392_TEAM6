@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.PRM392_TEAM1_SpaApp" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.PRM392_TEAM6_SpaApp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
@@ -13,5 +13,5 @@
         <item name="colorOnPrimary">@color/gray</item>
     </style>
 
-    <style name="Theme.PRM392_TEAM1_SpaApp" parent="Base.Theme.PRM392_TEAM1_SpaApp" />
+    <style name="Theme.PRM392_TEAM6_SpaApp" parent="Base.Theme.PRM392_TEAM6_SpaApp" />
 </resources>

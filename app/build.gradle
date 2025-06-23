@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.prm392_team1_spaapp'
+    namespace 'com.example.prm392_team6_spaapp'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.prm392_team1_spaapp"
+        applicationId "com.example.prm392_team6_spaapp"
         minSdk 24
         targetSdk 33
         versionCode 1
@@ -28,6 +28,9 @@ android {
     }
     viewBinding {
         enabled = true
+    }
+    aaptOptions {
+        cruncherEnabled = false
     }
 }
 

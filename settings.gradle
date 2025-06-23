@@ -12,5 +12,5 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "PRM392_TEAM1_SpaApp"
+rootProject.name = "PRM392_TEAM6_SpaApp"
 include ':app'

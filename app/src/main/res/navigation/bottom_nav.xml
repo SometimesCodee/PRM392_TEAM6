@@ -6,12 +6,12 @@
     app:startDestination="@id/menu_home">
     <fragment
         android:id="@+id/menu_home"
-        android:name="com.example.prm392_team1_spaapp.fragment.HomeFragment"
+        android:name="com.example.prm392_team6_spaapp.fragment.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/menu_history"
-        android:name="com.example.prm392_team1_spaapp.fragment.HistoryFragment"
+        android:name="com.example.prm392_team6_spaapp.fragment.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
 <!--    <fragment-->
@@ -21,12 +21,12 @@
 <!--        tools:layout="@layout/fragment_qr" />-->
     <fragment
         android:id="@+id/menu_promotion"
-        android:name="com.example.prm392_team1_spaapp.fragment.PromotionFragment"
+        android:name="com.example.prm392_team6_spaapp.fragment.PromotionFragment"
         android:label="fragment_promotion"
         tools:layout="@layout/fragment_promotion" />
     <fragment
         android:id="@+id/menu_account"
-        android:name="com.example.prm392_team1_spaapp.fragment.AccountFragment"
+        android:name="com.example.prm392_team6_spaapp.fragment.AccountFragment"
         android:label="fragment_account"
         tools:layout="@layout/fragment_account" />
 </navigation>
