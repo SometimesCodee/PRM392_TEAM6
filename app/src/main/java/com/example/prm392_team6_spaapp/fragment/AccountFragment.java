@@ -1,5 +1,5 @@
 package com.example.prm392_team6_spaapp.fragment;
-
+import com.example.prm392_team6_spaapp.MapsActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -30,7 +30,7 @@ public class AccountFragment extends Fragment {
     private TextView tvPhone;
     private RelativeLayout layoutEditUserProfile;
     private LinearLayout layoutSoDu,layoutUuDai,layoutNganHang,layoutQuanLyHoDon,layoutLienKetNganHang,
-            layoutThietLapTaiKhoan,layoutThietLapThongBao,layoutTrungTamHoTro,layoutThongTinUngDung;
+            layoutThietLapTaiKhoan,layoutThietLapThongBao,layoutTrungTamHoTro,layoutThongTinUngDung, layoutMap;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class AccountFragment extends Fragment {
         layoutEditUserProfile = view.findViewById(R.id.edit_user_profile);
         layoutNganHang = view.findViewById(R.id.layout_ngan_hang);
         layoutThietLapTaiKhoan = view.findViewById(R.id.layout_thiet_lap_tai_khoan);
-
+        layoutMap = view.findViewById(R.id.layout_map);
         Account account = AccountDatabase.getInstance(getContext()).getAccountDAO().getAccount(
                 DataLocalManager.getInstance().getPrefUsername()
         ) ;
@@ -71,6 +71,13 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AccountSettingActivity.class);
+                startActivity(intent);
+            }
+        });
+        layoutMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), MapsActivity.class);
                 startActivity(intent);
             }
         });

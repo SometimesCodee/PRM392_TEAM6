@@ -4,7 +4,7 @@
     android:installLocation="auto">
 
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".dataLocal.MyApplication"
         android:allowBackup="true"
@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PRM392_TEAM6_SpaApp"
         tools:targetApi="31">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBwNvCLHBc_7SWr3ZG8HsYGQvT0kDyxl74" />
         <activity
             android:name=".AccountSettingActivity"
             android:exported="false" />
@@ -42,6 +45,9 @@
             android:exported="false" />
         <activity
             android:name=".WithdrawDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MapsActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
