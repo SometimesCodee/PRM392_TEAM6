@@ -4,76 +4,73 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="8dp"
-    android:background="@android:color/white">
+    android:padding="12dp"
+    android:layout_margin="8dp"
+    android:background="@drawable/background_white"
+    android:elevation="2dp">
 
-    <!-- TextView để hiển thị tên người đánh giá -->
+    <!-- Header với tên người dùng và ngày -->
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginBottom="8dp">
 
-        <!-- ImageView -->
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/round_img"
-        android:layout_gravity="center" />
+        <!-- Avatar -->
+        <ImageView
+            android:id="@+id/avatarImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_avatar"
+            android:layout_gravity="center_vertical" />
 
-
-        <!-- TextView -->
-        <TextView
-            android:id="@+id/customerNameTextView"
-            android:layout_width="match_parent"
+        <!-- Thông tin người dùng -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:text="Ngọc Trâm"
-            android:textSize="16sp" />
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp"
+            android:layout_gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/customerNameTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tên người dùng"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textColor="#2E7D32" />
+
+            <TextView
+                android:id="@+id/dateTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="01/01/2024 10:30"
+                android:textSize="12sp"
+                android:textColor="#757575" />
+        </LinearLayout>
     </LinearLayout>
-    <!-- TextView để hiển thị đánh giá -->
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <!-- Rating bar -->
+    <RatingBar
+        android:id="@+id/ratingBarDisplay"
+        style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="5dp">
+        android:numStars="5"
+        android:rating="5"
+        android:isIndicator="true"
+        android:layout_marginBottom="8dp" />
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/baseline_star_rate_24" />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/baseline_star_rate_24" />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/baseline_star_rate_24" />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/baseline_star_rate_24" />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/baseline_star_rate_24" />
-    </LinearLayout>
-
-    <!-- TextView để hiển thị bình luận -->
+    <!-- Bình luận -->
     <TextView
         android:id="@+id/commentTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Dịch vụ của shop sử dụng rất tốt, giá cả hợp lý"
-        android:textSize="18sp" />
+        android:textSize="14sp"
+        android:textColor="#424242"
+        android:lineSpacingExtra="2dp" />
 
 </LinearLayout>
