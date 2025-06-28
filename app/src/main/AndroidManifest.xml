@@ -44,6 +44,12 @@
             android:name=".WithdrawDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".RechargeSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WithdrawSuccessActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>

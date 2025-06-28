@@ -7,8 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import com.example.prm392_team6_spaapp.dataLocal.DataLocalManager;
 import com.example.prm392_team6_spaapp.model.AccountDatabase;
@@ -44,51 +47,50 @@ public class WithdrawDetailActivity extends AppCompatActivity {
         totalMoney = findViewById(R.id.totalMoney);
         submit = findViewById(R.id.confirm_button2);
 
-        totalMoney.setText(""+ DataLocalManager.getInstance().getPrefMoney() + "đ");
+        float money = DataLocalManager.getInstance().getPrefMoney();
+        NumberFormat numberFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
+        String formattedMoney = numberFormat.format(money);
+        totalMoney.setText(formattedMoney + "đ");
 
         btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                edt1.setText(btn1.getText());
+                edt1.setText("50.000 đ");
             }
         });
 
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                edt1.setText(btn2.getText());
+                edt1.setText("100.000 đ");
             }
         });
 
         btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                edt1.setText(btn3.getText());
-
+                edt1.setText("200.000 đ");
             }
         });
 
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                edt1.setText(btn4.getText());
-
+                edt1.setText("500.000 đ");
             }
         });
 
         btn5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                edt1.setText(btn5.getText());
-
+                edt1.setText("1.000.000 đ");
             }
         });
 
         btn6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                edt1.setText(btn6.getText());
-
+                edt1.setText("2.000.000 đ");
             }
         });
 
@@ -103,13 +105,63 @@ public class WithdrawDetailActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                float subMoney = DataLocalManager.getInstance().getPrefMoney() - Float.parseFloat(edt1.getText().toString().trim());
-                AccountDatabase.getInstance(getApplicationContext()).getAccountDAO().updateMoney(
-                        DataLocalManager.getInstance().getPrefUsername(), subMoney
-                );
-                DataLocalManager.getInstance().setPrefMoney(subMoney);
-                recreate();
+                String withdrawAmount = edt1.getText().toString().trim();
+                if (withdrawAmount.isEmpty()) {
+                    Toast.makeText(WithdrawDetailActivity.this, "Vui lòng nhập số tiền!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
+                try {
+                    // Xử lý chuỗi số tiền - loại bỏ dấu phẩy, chấm và ký tự đặc biệt
+                    String cleanAmount = cleanMoneyString(withdrawAmount);
+                    float withdrawValue = Float.parseFloat(cleanAmount);
+                    
+                    if (withdrawValue <= 0) {
+                        Toast.makeText(WithdrawDetailActivity.this, "Số tiền phải lớn hơn 0!", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    
+                    float currentMoney = DataLocalManager.getInstance().getPrefMoney();
+                    if (withdrawValue > currentMoney) {
+                        Toast.makeText(WithdrawDetailActivity.this, "Số dư không đủ! Số dư hiện tại: " + 
+                            NumberFormat.getInstance(new Locale("vi", "VN")).format(currentMoney) + "đ", 
+                            Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    
+                    float subMoney = currentMoney - withdrawValue;
+                    AccountDatabase.getInstance(getApplicationContext()).getAccountDAO().updateMoney(
+                            DataLocalManager.getInstance().getPrefUsername(), subMoney
+                    );
+                    DataLocalManager.getInstance().setPrefMoney(subMoney);
+                    
+                    // Chuyển đến màn hình thành công
+                    Intent intent = new Intent(WithdrawDetailActivity.this, WithdrawSuccessActivity.class);
+                    intent.putExtra("withdraw_amount", cleanAmount);
+                    startActivity(intent);
+                    finish();
+                    
+                } catch (NumberFormatException e) {
+                    Toast.makeText(WithdrawDetailActivity.this, "Số tiền không hợp lệ!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    /**
+     * Làm sạch chuỗi số tiền - loại bỏ dấu phẩy, chấm, ký tự đặc biệt và chữ
+     */
+    private String cleanMoneyString(String moneyString) {
+        if (moneyString == null) return "0";
+        
+        // Loại bỏ tất cả ký tự không phải số
+        String cleaned = moneyString.replaceAll("[^0-9]", "");
+        
+        // Nếu chuỗi rỗng sau khi làm sạch, trả về "0"
+        if (cleaned.isEmpty()) {
+            return "0";
+        }
+        
+        return cleaned;
     }
 }

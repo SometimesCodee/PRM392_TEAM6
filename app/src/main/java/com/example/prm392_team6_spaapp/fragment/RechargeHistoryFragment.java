@@ -40,12 +40,12 @@ public class RechargeHistoryFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_history_list, container, false);;
         listRechargeHistory = RechargeHistoryDatabase.getInstance(getContext()).getHistoryDAO().getAllHistoriesOfAccount(DataLocalManager.getInstance().getPrefUsername());
         if (listRechargeHistory.isEmpty()) {
-            listRechargeHistory.add(new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12", 12000, 1, "Bạn đã nạp tiền thành công"));
-            listRechargeHistory.add(new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12", 100000, 0, "Bạn đã nạp tiền thất bại"));
-            listRechargeHistory.add(new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12", 562000, 1, "Bạn đã nạp tiền thành công"));
-            listRechargeHistory.add(new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12", 123000, 0, "Bạn đã nạp tiền thất bại"));
-            listRechargeHistory.add(new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12", 52300, 1, "Bạn đã nạp tiền thành công"));
-            listRechargeHistory.add(new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12", 33000, 1, "Bạn đã nạp tiền thành công"));
+            listRechargeHistory.add(new RechargeHistory( "vuongddhe172450", "Nạp tiền", "2025-6-12", 12000, 1, "Bạn đã nạp tiền thành công"));
+            listRechargeHistory.add(new RechargeHistory( "vuongddhe172450", "Nạp tiền", "2025-6-14", 100000, 0, "Bạn đã nạp tiền thất bại"));
+            listRechargeHistory.add(new RechargeHistory( "vuongddhe172450", "Nạp tiền", "2025-6-14", 562000, 1, "Bạn đã nạp tiền thành công"));
+            listRechargeHistory.add(new RechargeHistory( "vuongddhe172450", "Nạp tiền", "2025-6-15", 123000, 0, "Bạn đã nạp tiền thất bại"));
+            listRechargeHistory.add(new RechargeHistory( "vuongddhe172450", "Nạp tiền", "2025-6-16", 52300, 1, "Bạn đã nạp tiền thành công"));
+            listRechargeHistory.add(new RechargeHistory( "vuongddhe172450", "Nạp tiền", "2025-6-26", 33000, 1, "Bạn đã nạp tiền thành công"));
         }
         recyclerView = view.findViewById(R.id.rcv_cate_all);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));

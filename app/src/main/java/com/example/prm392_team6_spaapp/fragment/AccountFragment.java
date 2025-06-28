@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import com.example.prm392_team6_spaapp.AccountSettingActivity;
 import com.example.prm392_team6_spaapp.BankActivity;
 import com.example.prm392_team6_spaapp.R;
+import com.example.prm392_team6_spaapp.RechargeWithdrawActivity;
 import com.example.prm392_team6_spaapp.UserProfileActivity;
 import com.example.prm392_team6_spaapp.dataLocal.DataLocalManager;
 import com.example.prm392_team6_spaapp.model.Account;
@@ -40,6 +41,7 @@ public class AccountFragment extends Fragment {
         tvFullName = view.findViewById(R.id.common_account_header_name);
         tvPhone = view.findViewById(R.id.common_account_header_phone_number);
         layoutEditUserProfile = view.findViewById(R.id.edit_user_profile);
+        layoutSoDu = view.findViewById(R.id.layout_so_du);
         layoutNganHang = view.findViewById(R.id.layout_ngan_hang);
         layoutThietLapTaiKhoan = view.findViewById(R.id.layout_thiet_lap_tai_khoan);
 
@@ -55,6 +57,14 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), UserProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        layoutSoDu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RechargeWithdrawActivity.class);
                 startActivity(intent);
             }
         });
