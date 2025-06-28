@@ -4,18 +4,21 @@ plugins {
 
 android {
     namespace 'com.example.prm392_team6_spaapp'
-    compileSdk 33
-
+    compileSdk 34
+    buildFeatures {
+        buildConfig true
+    }
     defaultConfig {
         applicationId "com.example.prm392_team6_spaapp"
         minSdk 24
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        def mapsKey = project.hasProperty("GOOGLE_MAPS_API_KEY") ? project.GOOGLE_MAPS_API_KEY : ""
+        resValue "string", "google_maps_key", "\"${mapsKey}\""
+        def openAiKey = project.hasProperty("OPENAI_API_KEY") ? project.OPENAI_API_KEY : ""
+        buildConfigField "String", "OPENAI_API_KEY", "\"${openAiKey}\""
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -59,4 +62,8 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "androidx.room:room-runtime:2.6.1"
+    annotationProcessor "androidx.room:room-compiler:2.6.1"
 }

@@ -6,4 +6,6 @@
     <string name="menu_coin">Promotion</string>
     <string name="menu_account">Account</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_input_message">Nhập tin nhắn...</string>
+    <string name="send_button">Gửi</string>
 </resources>
