@@ -48,6 +48,10 @@
             android:exported="false" />
         <activity
             android:name=".MapsActivity"
+            android:name=".RechargeSuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WithdrawSuccessActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
