@@ -22,4 +22,6 @@ public interface RechargeHistoryDAO {
     public RechargeHistory getHistory(int recharge_history_id);
     @Query("select * from RechargeHistory where username ==:username")
     public List<RechargeHistory> getAllHistoriesOfAccount(String username);
+    @Query("select * from RechargeHistory where username ==:username and transaction_type ==:transactionType")
+    public List<RechargeHistory> getHistoriesByType(String username, String transactionType);
 }
