@@ -134,7 +134,7 @@ public class RechargeDetailActivity extends AppCompatActivity {
                     DataLocalManager.getInstance().setPrefMoney(addMoney);
                     
                     // Lưu giao dịch nạp tiền vào database
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                     String currentDate = dateFormat.format(new Date());
                     RechargeHistory rechargeHistory = new RechargeHistory(
                             DataLocalManager.getInstance().getPrefUsername(),

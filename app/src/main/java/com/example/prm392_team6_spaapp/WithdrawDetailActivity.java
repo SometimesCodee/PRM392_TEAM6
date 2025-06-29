@@ -140,7 +140,7 @@ public class WithdrawDetailActivity extends AppCompatActivity {
                     DataLocalManager.getInstance().setPrefMoney(subMoney);
                     
                     // Lưu giao dịch rút tiền vào database
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
                     String currentDate = dateFormat.format(new Date());
                     RechargeHistory withdrawHistory = new RechargeHistory(
                             DataLocalManager.getInstance().getPrefUsername(),

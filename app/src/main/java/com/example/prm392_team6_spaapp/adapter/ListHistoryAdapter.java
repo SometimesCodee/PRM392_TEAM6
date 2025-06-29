@@ -13,6 +13,9 @@ import com.example.prm392_team6_spaapp.R;
 import com.example.prm392_team6_spaapp.model.RechargeHistory;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,7 +49,11 @@ public class ListHistoryAdapter extends RecyclerView.Adapter<ListHistoryAdapter.
             return;
         }
         holder.tv_name.setText(rechargeHistory.getTransactionType());
-        holder.tv_date.setText(rechargeHistory.getTransactionTime().toString());
+        
+        // Format thời gian hiển thị
+        String displayTime = formatDisplayTime(rechargeHistory.getTransactionTime());
+        holder.tv_date.setText(displayTime);
+        
         holder.description.setText(rechargeHistory.getDescription());
         
         // Format số tiền theo định dạng tiền tệ Việt Nam
@@ -67,6 +74,24 @@ public class ListHistoryAdapter extends RecyclerView.Adapter<ListHistoryAdapter.
             return listRechargeHistory.size();
         }
         return 0;
+    }
+    
+    /**
+     * Format thời gian để hiển thị theo định dạng dd/MM/yyyy HH:mm
+     */
+    private String formatDisplayTime(String transactionTime) {
+        try {
+            SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+            Date date = inputFormat.parse(transactionTime);
+            if (date != null) {
+                return outputFormat.format(date);
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        // Nếu không parse được, trả về nguyên bản
+        return transactionTime;
     }
 
 
