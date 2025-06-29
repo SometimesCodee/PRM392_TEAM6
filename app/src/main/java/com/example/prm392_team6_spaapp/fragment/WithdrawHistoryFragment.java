@@ -28,11 +28,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class RechargeHistoryFragment extends Fragment {
+public class WithdrawHistoryFragment extends Fragment {
     private static final String TABLE_NAME = "bank_trans";
     private RecyclerView recyclerView;
     private ListHistoryAdapter adapter;
-    private List<RechargeHistory> listRechargeHistory;
+    private List<RechargeHistory> listWithdrawHistory;
 
     @Nullable
     @Override
@@ -58,8 +58,8 @@ public class RechargeHistoryFragment extends Fragment {
     }
     
     private void loadData() {
-        // Lấy lịch sử nạp tiền từ database
-        listRechargeHistory = RechargeHistoryDatabase.getInstance(getContext()).getHistoryDAO().getHistoriesByType(DataLocalManager.getInstance().getPrefUsername(), "Nạp tiền");
-        adapter.setData(listRechargeHistory);
+        // Lấy lịch sử rút tiền từ database
+        listWithdrawHistory = RechargeHistoryDatabase.getInstance(getContext()).getHistoryDAO().getHistoriesByType(DataLocalManager.getInstance().getPrefUsername(), "Rút tiền");
+        adapter.setData(listWithdrawHistory);
     }
-}
+} 

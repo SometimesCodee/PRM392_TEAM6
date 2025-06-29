@@ -11,9 +11,13 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 import com.example.prm392_team6_spaapp.dataLocal.DataLocalManager;
 import com.example.prm392_team6_spaapp.model.AccountDatabase;
+import com.example.prm392_team6_spaapp.model.RechargeHistory;
+import com.example.prm392_team6_spaapp.model.RechargeHistoryDatabase;
 
 
 public class RechargeDetailActivity extends AppCompatActivity {
@@ -128,6 +132,19 @@ public class RechargeDetailActivity extends AppCompatActivity {
                             DataLocalManager.getInstance().getPrefUsername(), addMoney
                     );
                     DataLocalManager.getInstance().setPrefMoney(addMoney);
+                    
+                    // Lưu giao dịch nạp tiền vào database
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                    String currentDate = dateFormat.format(new Date());
+                    RechargeHistory rechargeHistory = new RechargeHistory(
+                            DataLocalManager.getInstance().getPrefUsername(),
+                            "Nạp tiền",
+                            currentDate,
+                            rechargeValue,
+                            1, // Thành công
+                            "Bạn đã nạp tiền thành công"
+                    );
+                    RechargeHistoryDatabase.getInstance(getApplicationContext()).getHistoryDAO().addHistory(rechargeHistory);
                     
                     // Chuyển đến màn hình thành công
                     Intent intent = new Intent(RechargeDetailActivity.this, RechargeSuccessActivity.class);

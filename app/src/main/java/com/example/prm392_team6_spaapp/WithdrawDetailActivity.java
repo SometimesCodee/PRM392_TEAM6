@@ -11,10 +11,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import com.example.prm392_team6_spaapp.dataLocal.DataLocalManager;
 import com.example.prm392_team6_spaapp.model.AccountDatabase;
+import com.example.prm392_team6_spaapp.model.RechargeHistory;
+import com.example.prm392_team6_spaapp.model.RechargeHistoryDatabase;
 
 
 public class WithdrawDetailActivity extends AppCompatActivity {
@@ -134,6 +138,19 @@ public class WithdrawDetailActivity extends AppCompatActivity {
                             DataLocalManager.getInstance().getPrefUsername(), subMoney
                     );
                     DataLocalManager.getInstance().setPrefMoney(subMoney);
+                    
+                    // Lưu giao dịch rút tiền vào database
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+                    String currentDate = dateFormat.format(new Date());
+                    RechargeHistory withdrawHistory = new RechargeHistory(
+                            DataLocalManager.getInstance().getPrefUsername(),
+                            "Rút tiền",
+                            currentDate,
+                            withdrawValue,
+                            1, // Thành công
+                            "Bạn đã rút tiền thành công"
+                    );
+                    RechargeHistoryDatabase.getInstance(getApplicationContext()).getHistoryDAO().addHistory(withdrawHistory);
                     
                     // Chuyển đến màn hình thành công
                     Intent intent = new Intent(WithdrawDetailActivity.this, WithdrawSuccessActivity.class);

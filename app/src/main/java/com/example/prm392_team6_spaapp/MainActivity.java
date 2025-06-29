@@ -82,22 +82,22 @@ public class MainActivity extends AppCompatActivity {
 
         mRechargeHistoryList = RechargeHistoryDatabase.getInstance(this).getHistoryDAO().getAllHistory();
         if (mRechargeHistoryList.isEmpty()) {
-            RechargeHistory rechargeHistory1 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12", 12000, 1, "Bạn đã nạp tiền thành công");
+            RechargeHistory rechargeHistory1 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12 11:00:00", 12000, 1, "Bạn đã nạp tiền thành công");
             RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(rechargeHistory1);
 
-            RechargeHistory rechargeHistory2 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12", 100000, 0, "Bạn đã nạp tiền thất bại");
+            RechargeHistory rechargeHistory2 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12 09:30:00", 100000, 0, "Bạn đã nạp tiền thất bại");
             RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(rechargeHistory2);
 
-            RechargeHistory rechargeHistory3 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12", 562000, 1, "Bạn đã nạp tiền thành công");
+            RechargeHistory rechargeHistory3 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12 16:45:00", 562000, 1, "Bạn đã nạp tiền thành công");
             RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(rechargeHistory3);
 
-            RechargeHistory rechargeHistory4 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12", 123000, 0, "Bạn đã nạp tiền thất bại");
+            RechargeHistory rechargeHistory4 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12 10:15:00", 123000, 0, "Bạn đã nạp tiền thất bại");
             RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(rechargeHistory4);
 
-            RechargeHistory rechargeHistory5 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12", 52300, 1, "Bạn đã nạp tiền thành công");
+            RechargeHistory rechargeHistory5 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12 14:20:00", 52300, 1, "Bạn đã nạp tiền thành công");
             RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(rechargeHistory5);
 
-            RechargeHistory rechargeHistory6 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12", 33000, 1, "Bạn đã nạp tiền thành công");
+            RechargeHistory rechargeHistory6 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12 15:30:00", 33000, 1, "Bạn đã nạp tiền thành công");
             RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(rechargeHistory6);
             mRechargeHistoryList = RechargeHistoryDatabase.getInstance(this).getHistoryDAO().getAllHistory();
         }
