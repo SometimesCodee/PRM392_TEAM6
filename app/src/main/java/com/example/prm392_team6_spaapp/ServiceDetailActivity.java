@@ -119,6 +119,13 @@ public class ServiceDetailActivity extends AppCompatActivity implements MediaPla
             }
         });
 
+        btnSubmitReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                submitFeedback();
+            }
+        });
+
         backImage.setOnClickListener(v -> {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
@@ -129,24 +136,40 @@ public class ServiceDetailActivity extends AppCompatActivity implements MediaPla
     }
     
     private void setupRecyclerView() {
-        feedbackAdapter = new FeedbackAdapter(this, new ArrayList<>());
-        recyclerViewFeedbacks.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewFeedbacks.setAdapter(feedbackAdapter);
+        try {
+            feedbackAdapter = new FeedbackAdapter(this, new ArrayList<>());
+            recyclerViewFeedbacks.setLayoutManager(new LinearLayoutManager(this));
+            recyclerViewFeedbacks.setAdapter(feedbackAdapter);
+            android.util.Log.d("SetupRecyclerView", "RecyclerView setup completed successfully");
+        } catch (Exception e) {
+            android.util.Log.e("SetupRecyclerView", "Error setting up RecyclerView: " + e.getMessage(), e);
+        }
     }
 
     private void loadExistingFeedbacks() {
         if (currentService == null) {
+            android.util.Log.e("LoadFeedbacks", "currentService is null");
             return;
         }
         
         try {
+            // Thêm dữ liệu mẫu nếu chưa có feedback nào
+            addSampleFeedbacksIfEmpty();
+            
+            android.util.Log.d("LoadFeedbacks", "Current service ID: " + currentService.getServiceId());
+            
             List<Feedback> feedbacks = FeedbackDatabase.getInstance(this)
                     .getFeedbackDAO()
                     .getFeedbacksByServiceId(currentService.getServiceId());
             
+            android.util.Log.d("LoadFeedbacks", "Service ID: " + currentService.getServiceId() + ", Found feedbacks: " + feedbacks.size());
+            
             // Cập nhật RecyclerView
             if (feedbackAdapter != null) {
                 feedbackAdapter.updateFeedbackList(feedbacks);
+                android.util.Log.d("LoadFeedbacks", "Updated adapter with " + feedbacks.size() + " feedbacks");
+            } else {
+                android.util.Log.e("LoadFeedbacks", "feedbackAdapter is null");
             }
             
             // Hiển thị thông tin tổng quan
@@ -162,16 +185,63 @@ public class ServiceDetailActivity extends AppCompatActivity implements MediaPla
                         avgRating != null ? avgRating : 0.0f, feedbackCount);
                     
                     tvRatingOverview.setText(ratingInfo);
+                    android.util.Log.d("LoadFeedbacks", "Rating info: " + ratingInfo);
                 } else {
-                    tvRatingOverview.setText("Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá dịch vụ này!");
+                    tvRatingOverview.setText("Chưa có đánh giá nào cho dịch vụ này. Hãy là người đầu tiên đánh giá!");
+                    android.util.Log.d("LoadFeedbacks", "No feedbacks found for service ID: " + currentService.getServiceId());
                 }
+            } else {
+                android.util.Log.e("LoadFeedbacks", "tvRatingOverview is null");
             }
         } catch (Exception e) {
             android.util.Log.e("LoadFeedbacks", "Error loading feedbacks: " + e.getMessage(), e);
             // Đặt text mặc định nếu có lỗi
             if (tvRatingOverview != null) {
-                tvRatingOverview.setText("Không thể tải đánh giá");
+                tvRatingOverview.setText("Không thể tải đánh giá: " + e.getMessage());
             }
+        }
+    }
+    
+    private void addSampleFeedbacksIfEmpty() {
+        try {
+            List<Feedback> existingFeedbacks = FeedbackDatabase.getInstance(this)
+                    .getFeedbackDAO()
+                    .getAllFeedbacks();
+            
+            if (existingFeedbacks.isEmpty()) {
+                android.util.Log.d("SampleData", "Adding sample feedbacks...");
+                
+                // Thêm feedback mẫu cho nhiều dịch vụ
+                Feedback feedback1 = new Feedback(1, "Nguyễn Văn A", 5.0f, 
+                    "Dịch vụ chăm sóc da rất tốt, nhân viên phục vụ chuyên nghiệp!", "15/12/2024 10:30");
+                Feedback feedback2 = new Feedback(1, "Trần Thị B", 4.5f, 
+                    "Chất lượng dịch vụ tốt, giá cả hợp lý", "14/12/2024 14:20");
+                Feedback feedback3 = new Feedback(1, "Lê Văn C", 5.0f, 
+                    "Rất hài lòng với dịch vụ, sẽ quay lại!", "13/12/2024 16:45");
+                
+                // Feedback cho dịch vụ khác
+                Feedback feedback4 = new Feedback(2, "Phạm Thị D", 4.0f, 
+                    "Dịch vụ trị nám hiệu quả, da sáng hơn rõ rệt", "12/12/2024 09:15");
+                Feedback feedback5 = new Feedback(2, "Hoàng Văn E", 5.0f, 
+                    "Kết quả vượt mong đợi, rất hài lòng!", "11/12/2024 15:30");
+                
+                Feedback feedback6 = new Feedback(3, "Vũ Thị F", 4.5f, 
+                    "Triệt lông hiệu quả, không đau", "10/12/2024 11:20");
+                Feedback feedback7 = new Feedback(5, "Đỗ Văn G", 5.0f, 
+                    "Massage thư giãn tuyệt vời, giảm stress hiệu quả", "09/12/2024 16:45");
+                
+                FeedbackDatabase.getInstance(this).getFeedbackDAO().addFeedback(feedback1);
+                FeedbackDatabase.getInstance(this).getFeedbackDAO().addFeedback(feedback2);
+                FeedbackDatabase.getInstance(this).getFeedbackDAO().addFeedback(feedback3);
+                FeedbackDatabase.getInstance(this).getFeedbackDAO().addFeedback(feedback4);
+                FeedbackDatabase.getInstance(this).getFeedbackDAO().addFeedback(feedback5);
+                FeedbackDatabase.getInstance(this).getFeedbackDAO().addFeedback(feedback6);
+                FeedbackDatabase.getInstance(this).getFeedbackDAO().addFeedback(feedback7);
+                
+                android.util.Log.d("SampleData", "Added 7 sample feedbacks for different services");
+            }
+        } catch (Exception e) {
+            android.util.Log.e("SampleData", "Error adding sample feedbacks: " + e.getMessage(), e);
         }
     }
 

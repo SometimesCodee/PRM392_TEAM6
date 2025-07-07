@@ -36,33 +36,47 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.Feedba
 
     @Override
     public void onBindViewHolder(@NonNull FeedbackViewHolder holder, int position) {
-        Feedback feedback = feedbackList.get(position);
-        
-        // Set tên người dùng
-        holder.customerNameTextView.setText(feedback.getUsername());
-        
-        // Set ngày
-        holder.dateTextView.setText(feedback.getDateCreated());
-        
-        // Set rating
-        holder.ratingBarDisplay.setRating(feedback.getRating());
-        
-        // Set comment
-        holder.commentTextView.setText(feedback.getComment());
-        
-        // Set avatar ngẫu nhiên
-        int avatarIndex = Math.abs(feedback.getUsername().hashCode()) % avatars.length;
-        holder.avatarImageView.setImageResource(avatars[avatarIndex]);
+        try {
+            Feedback feedback = feedbackList.get(position);
+            android.util.Log.d("FeedbackAdapter", "Binding feedback at position " + position + ": " + feedback.getUsername());
+            
+            // Set tên người dùng
+            holder.customerNameTextView.setText(feedback.getUsername());
+            
+            // Set ngày
+            holder.dateTextView.setText(feedback.getDateCreated());
+            
+            // Set rating
+            holder.ratingBarDisplay.setRating(feedback.getRating());
+            
+            // Set comment
+            holder.commentTextView.setText(feedback.getComment());
+            
+            // Set avatar ngẫu nhiên
+            int avatarIndex = Math.abs(feedback.getUsername().hashCode()) % avatars.length;
+            holder.avatarImageView.setImageResource(avatars[avatarIndex]);
+            
+            android.util.Log.d("FeedbackAdapter", "Successfully bound feedback: " + feedback.getUsername());
+        } catch (Exception e) {
+            android.util.Log.e("FeedbackAdapter", "Error binding feedback at position " + position + ": " + e.getMessage(), e);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return feedbackList != null ? feedbackList.size() : 0;
+        int count = feedbackList != null ? feedbackList.size() : 0;
+        android.util.Log.d("FeedbackAdapter", "Item count: " + count);
+        return count;
     }
 
     public void updateFeedbackList(List<Feedback> newFeedbackList) {
-        this.feedbackList = newFeedbackList;
-        notifyDataSetChanged();
+        try {
+            this.feedbackList = newFeedbackList;
+            android.util.Log.d("FeedbackAdapter", "Updating feedback list with " + (newFeedbackList != null ? newFeedbackList.size() : 0) + " items");
+            notifyDataSetChanged();
+        } catch (Exception e) {
+            android.util.Log.e("FeedbackAdapter", "Error updating feedback list: " + e.getMessage(), e);
+        }
     }
 
     public static class FeedbackViewHolder extends RecyclerView.ViewHolder {

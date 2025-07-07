@@ -4,25 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="12dp"
+    android:padding="16dp"
     android:layout_margin="8dp"
     android:background="@drawable/background_white"
-    android:elevation="2dp">
+    android:elevation="3dp">
 
     <!-- Header với tên người dùng và ngày -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="8dp">
+        android:layout_marginBottom="12dp">
 
         <!-- Avatar -->
         <ImageView
             android:id="@+id/avatarImageView"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:src="@drawable/ic_avatar"
-            android:layout_gravity="center_vertical" />
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/background_white"
+            android:padding="2dp" />
 
         <!-- Thông tin người dùng -->
         <LinearLayout
@@ -40,7 +42,7 @@
                 android:text="Tên người dùng"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                android:textColor="#2E7D32" />
+                android:textColor="@color/primary" />
 
             <TextView
                 android:id="@+id/dateTextView"
@@ -48,7 +50,8 @@
                 android:layout_height="wrap_content"
                 android:text="01/01/2024 10:30"
                 android:textSize="12sp"
-                android:textColor="#757575" />
+                android:textColor="@color/gray"
+                android:layout_marginTop="2dp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -61,7 +64,8 @@
         android:numStars="5"
         android:rating="5"
         android:isIndicator="true"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="12dp"
+        android:progressTint="@color/star" />
 
     <!-- Bình luận -->
     <TextView
@@ -70,7 +74,9 @@
         android:layout_height="wrap_content"
         android:text="Dịch vụ của shop sử dụng rất tốt, giá cả hợp lý"
         android:textSize="14sp"
-        android:textColor="#424242"
-        android:lineSpacingExtra="2dp" />
+        android:textColor="@color/black"
+        android:lineSpacingExtra="4dp"
+        android:background="@drawable/background_white"
+        android:padding="12dp" />
 
 </LinearLayout>
