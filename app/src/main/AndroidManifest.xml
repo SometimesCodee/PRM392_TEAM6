@@ -32,6 +32,9 @@
             android:name=".BookingActivity"
             android:exported="false" />
         <activity
+            android:name=".BookingDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true"
         android:windowSoftInputMode="adjustResize" />
