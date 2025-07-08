@@ -31,20 +31,18 @@ public class HistoryAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position){
             case 0:
-                return new RechargeHistoryFragment();
+                return new com.example.prm392_team6_spaapp.fragment.TransactionHistoryFragment();
             case 1:
-                return new WithdrawHistoryFragment();
-            case 2:
                 return new PhoneCateHistoryFragment();
             default:
-                return new RechargeHistoryFragment();
+                return new com.example.prm392_team6_spaapp.fragment.TransactionHistoryFragment();
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 2;
     }
 
 
