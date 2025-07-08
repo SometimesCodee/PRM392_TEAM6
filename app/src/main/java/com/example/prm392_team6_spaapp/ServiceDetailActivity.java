@@ -115,7 +115,21 @@ public class ServiceDetailActivity extends AppCompatActivity implements MediaPla
         btnBookService.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // Kiểm tra đăng nhập
+                String username = DataLocalManager.getInstance().getPrefUsername();
+                if (username == null || username.isEmpty()) {
+                    Toast.makeText(ServiceDetailActivity.this, "Vui lòng đăng nhập để đặt lịch!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                
+                // Mở BookingActivity với thông tin dịch vụ
+                Intent intent = new Intent(ServiceDetailActivity.this, BookingActivity.class);
+                intent.putExtra("service_id", currentService.getServiceId());
+                intent.putExtra("service_name", currentService.getServiceName());
+                intent.putExtra("service_price", currentService.getPrice());
+                intent.putExtra("service_duration", currentService.getDuration());
+                intent.putExtra("username", username);
+                startActivity(intent);
             }
         });
 
