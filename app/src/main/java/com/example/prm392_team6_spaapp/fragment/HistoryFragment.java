@@ -33,9 +33,12 @@ public class HistoryFragment extends Fragment  {
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) ->{
                     if(position==0) {
-                        tab.setText("Lịch sử giao dịch");
+                        tab.setText("Lịch sử nạp tiền");
                     }
                     else if(position==1) {
+                        tab.setText("Lịch sử rút tiền");
+                    }
+                    else if(position==2) {
                         tab.setText("Lịch sử đặt lịch");
                     }
                 }

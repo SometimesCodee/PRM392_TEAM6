@@ -91,6 +91,7 @@
                 android:layout_gravity="center_vertical" />
 
             <TextView
+                android:id="@+id/tv_balance"
                 android:layout_width="0dp"
                 android:layout_height="18dp"
                 android:layout_weight="1"

@@ -32,7 +32,7 @@
             android:name=".BookingActivity"
             android:exported="false" />
         <activity
-            android:name=".BookingDetailActivity"
+            android:name=".BookingSuccessActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

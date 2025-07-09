@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.prm392_team6_spaapp.dataLocal.DataLocalManager;
+import com.example.prm392_team6_spaapp.model.AccountDatabase;
 import com.example.prm392_team6_spaapp.model.Booking;
 import com.example.prm392_team6_spaapp.model.BookingDatabase;
 
@@ -136,6 +138,28 @@ public class BookingActivity extends AppCompatActivity {
             return;
         }
         
+        // Kiểm tra xem đã chọn ngày trong tương lai chưa
+        Calendar selectedCalendar = Calendar.getInstance();
+        selectedCalendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR));
+        selectedCalendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH));
+        selectedCalendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH));
+        selectedCalendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY));
+        selectedCalendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE));
+        
+        Calendar now = Calendar.getInstance();
+        if (selectedCalendar.before(now)) {
+            Toast.makeText(this, "Vui lòng chọn thời gian trong tương lai!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
+        // Kiểm tra số dư trước khi hiển thị dialog
+        float currentMoney = DataLocalManager.getInstance().getPrefMoney();
+        if (servicePrice > currentMoney) {
+            Toast.makeText(this, "Số dư không đủ để đặt lịch! Số dư hiện tại: " + 
+                String.format(Locale.getDefault(), "%.0fđ", currentMoney), Toast.LENGTH_LONG).show();
+            return;
+        }
+        
         // Hiển thị dialog xác nhận
         new AlertDialog.Builder(this)
             .setTitle("Xác nhận đặt lịch")
@@ -143,8 +167,11 @@ public class BookingActivity extends AppCompatActivity {
                 "Dịch vụ: %s\n" +
                 "Ngày: %s\n" +
                 "Giờ: %s\n" +
-                "Giá: %.0fđ", 
-                serviceName, selectedDate, selectedTime, servicePrice))
+                "Giá: %.0fđ\n" +
+                "Số dư hiện tại: %.0fđ\n" +
+                "Số dư sau khi đặt lịch: %.0fđ", 
+                serviceName, selectedDate, selectedTime, servicePrice, 
+                currentMoney, currentMoney - (float)servicePrice))
             .setPositiveButton("Xác nhận", (dialog, which) -> {
                 saveBooking();
             })
@@ -154,6 +181,17 @@ public class BookingActivity extends AppCompatActivity {
     
     private void saveBooking() {
         try {
+            // Lấy số dư hiện tại
+            float currentMoney = DataLocalManager.getInstance().getPrefMoney();
+            if (servicePrice > currentMoney) {
+                Toast.makeText(this, "Số dư không đủ để đặt lịch!", Toast.LENGTH_LONG).show();
+                return;
+            }
+            float newMoney = currentMoney - (float) servicePrice;
+            // Cập nhật số dư vào database và local
+            AccountDatabase.getInstance(this).getAccountDAO().updateMoney(username, newMoney);
+            DataLocalManager.getInstance().setPrefMoney(newMoney);
+
             Booking booking = new Booking(
                 username,
                 serviceId,
@@ -162,17 +200,17 @@ public class BookingActivity extends AppCompatActivity {
                 "Chờ xác nhận",
                 servicePrice
             );
-            
             BookingDatabase.getInstance(this).getBookingDAO().addBooking(booking);
             
-            Toast.makeText(this, "Đặt lịch thành công!", Toast.LENGTH_SHORT).show();
-            
-            // Chuyển về MainActivity
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            // Chuyển đến màn hình thành công
+            Intent intent = new Intent(this, BookingSuccessActivity.class);
+            intent.putExtra("service_name", serviceName);
+            intent.putExtra("service_price", servicePrice);
+            intent.putExtra("booking_date", selectedDate);
+            intent.putExtra("booking_time", selectedTime);
+            intent.putExtra("new_balance", newMoney);
             startActivity(intent);
             finish();
-            
         } catch (Exception e) {
             Toast.makeText(this, "Lỗi khi đặt lịch: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }

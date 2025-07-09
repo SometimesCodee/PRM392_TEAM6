@@ -13,8 +13,10 @@ import com.example.prm392_team6_spaapp.model.Promotion;
 import com.example.prm392_team6_spaapp.model.PromotionDatabase;
 import com.example.prm392_team6_spaapp.model.RechargeHistory;
 import com.example.prm392_team6_spaapp.model.RechargeHistoryDatabase;
+import android.content.Intent;
 import com.example.prm392_team6_spaapp.model.Service;
 import com.example.prm392_team6_spaapp.model.ServiceDatabase;
+import com.example.prm392_team6_spaapp.fragment.AccountFragment;
 
 import java.util.List;
 
@@ -33,6 +35,35 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         initData();
         initNavigation();
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh UI khi quay lại MainActivity
+        refreshAccountFragment();
+        
+        // Kiểm tra xem có cần mở tab History không
+        Intent intent = getIntent();
+        if (intent != null && intent.getBooleanExtra("open_history", false)) {
+            // Mở tab History
+            binding.bottomNavigation.setSelectedItemId(R.id.menu_history);
+            // Xóa flag để tránh mở lại
+            intent.removeExtra("open_history");
+        }
+    }
+    
+    private void refreshAccountFragment() {
+        // Tìm và refresh AccountFragment nếu đang hiển thị
+        try {
+            AccountFragment accountFragment = (AccountFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment_container);
+            if (accountFragment != null && accountFragment.isVisible()) {
+                accountFragment.onResume();
+            }
+        } catch (Exception e) {
+            // Ignore if fragment not found
+        }
     }
 
     private void initNavigation(){

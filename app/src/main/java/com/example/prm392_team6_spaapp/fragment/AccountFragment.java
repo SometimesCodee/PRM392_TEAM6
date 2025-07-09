@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import java.util.Locale;
 
 import com.example.prm392_team6_spaapp.AccountSettingActivity;
 import com.example.prm392_team6_spaapp.BankActivity;
@@ -29,6 +30,7 @@ public class AccountFragment extends Fragment {
     private CircleImageView civAvatar;
     private TextView tvFullName;
     private TextView tvPhone;
+    private TextView tvBalance;
     private RelativeLayout layoutEditUserProfile;
     private LinearLayout layoutSoDu,layoutUuDai,layoutNganHang,layoutQuanLyHoDon,layoutLienKetNganHang,
             layoutThietLapTaiKhoan,layoutThietLapThongBao,layoutTrungTamHoTro,layoutThongTinUngDung, layoutMap;
@@ -40,6 +42,7 @@ public class AccountFragment extends Fragment {
         civAvatar = view.findViewById(R.id.common_account_header_avatar);
         tvFullName = view.findViewById(R.id.common_account_header_name);
         tvPhone = view.findViewById(R.id.common_account_header_phone_number);
+        tvBalance = view.findViewById(R.id.tv_balance);
         layoutEditUserProfile = view.findViewById(R.id.edit_user_profile);
         layoutSoDu = view.findViewById(R.id.layout_so_du);
         layoutNganHang = view.findViewById(R.id.layout_ngan_hang);
@@ -52,6 +55,7 @@ public class AccountFragment extends Fragment {
         civAvatar.setImageResource(account.getAvatar());
         tvFullName.setText(account.getUsername());
         tvPhone.setText(account.getPhoneNumber());
+        tvBalance.setText(String.format(Locale.getDefault(), "%.0fđ", account.getMoney()));
 
         layoutEditUserProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,5 +96,17 @@ public class AccountFragment extends Fragment {
             }
         });
         return view;
+    }
+    
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Cập nhật số dư khi quay lại fragment
+        if (tvBalance != null) {
+            Account account = AccountDatabase.getInstance(getContext()).getAccountDAO().getAccount(
+                    DataLocalManager.getInstance().getPrefUsername()
+            );
+            tvBalance.setText(String.format(Locale.getDefault(), "%.0fđ", account.getMoney()));
+        }
     }
 }
