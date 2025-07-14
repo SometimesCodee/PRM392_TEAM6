@@ -14,11 +14,11 @@
         android:name="com.example.prm392_team6_spaapp.fragment.HistoryFragment"
         android:label="fragment_history"
         tools:layout="@layout/fragment_history" />
-<!--    <fragment-->
-<!--        android:id="@+id/menu_qr"-->
-<!--        android:name="fpt.edu.pay.fragment.QrFragment"-->
-<!--        android:label="fragment_qr"-->
-<!--        tools:layout="@layout/fragment_qr" />-->
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.prm392_team6_spaapp.fragment.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
     <fragment
         android:id="@+id/menu_promotion"
         android:name="com.example.prm392_team6_spaapp.fragment.PromotionFragment"

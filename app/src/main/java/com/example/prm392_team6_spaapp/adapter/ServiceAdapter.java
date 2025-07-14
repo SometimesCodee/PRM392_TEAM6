@@ -42,6 +42,8 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
 
         holder.imgServiceImage.setImageResource(service.getImg());
         holder.tvServiceName.setText(service.getServiceName());
+        holder.tvServicePrice.setText(String.format("%,.0f đ", service.getPrice()));
+        holder.tvServiceDuration.setText(service.getDuration());
 
         holder.layoutServiceItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,10 +67,14 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
         private LinearLayout layoutServiceItem;
         private ImageView imgServiceImage;
         private TextView tvServiceName;
+        private TextView tvServicePrice;
+        private TextView tvServiceDuration;
         public ServiceViewHolder(@NonNull View itemView) {
             super(itemView);
             imgServiceImage = itemView.findViewById(R.id.img_service_image);
             tvServiceName = itemView.findViewById(R.id.tv_service_name);
+            tvServicePrice = itemView.findViewById(R.id.tv_service_price);
+            tvServiceDuration = itemView.findViewById(R.id.tv_service_duration);
             layoutServiceItem = itemView.findViewById(R.id.layout_service_item);
         }
     }

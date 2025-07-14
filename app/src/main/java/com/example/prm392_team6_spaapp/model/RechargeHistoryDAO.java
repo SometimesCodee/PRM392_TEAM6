@@ -16,10 +16,12 @@ public interface RechargeHistoryDAO {
     public void updateHistory(RechargeHistory rechargeHistory);
     @Delete
     public void deleteHistory(RechargeHistory rechargeHistory);
-    @Query("select * from RechargeHistory")
+    @Query("select * from RechargeHistory ORDER BY transaction_time DESC")
     public List<RechargeHistory> getAllHistory();
-    @Query("select * from RechargeHistory where recharge_history_id ==:recharge_history_id")
+    @Query("select * from RechargeHistory where recharge_history_id ==:recharge_history_id ORDER BY transaction_time DESC")
     public RechargeHistory getHistory(int recharge_history_id);
-    @Query("select * from RechargeHistory where username ==:username")
+    @Query("select * from RechargeHistory where username ==:username ORDER BY transaction_time DESC")
     public List<RechargeHistory> getAllHistoriesOfAccount(String username);
+    @Query("select * from RechargeHistory where username ==:username and transaction_type ==:transactionType ORDER BY transaction_time DESC")
+    public List<RechargeHistory> getHistoriesByType(String username, String transactionType);
 }
