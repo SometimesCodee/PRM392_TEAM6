@@ -17,6 +17,8 @@ import com.example.prm392_team6_spaapp.dataLocal.DataLocalManager;
 import com.example.prm392_team6_spaapp.model.AccountDatabase;
 import com.example.prm392_team6_spaapp.model.Booking;
 import com.example.prm392_team6_spaapp.model.BookingDatabase;
+import com.example.prm392_team6_spaapp.model.RechargeHistory;
+import com.example.prm392_team6_spaapp.model.RechargeHistoryDatabase;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -201,6 +203,19 @@ public class BookingActivity extends AppCompatActivity {
                 servicePrice
             );
             BookingDatabase.getInstance(this).getBookingDAO().addBooking(booking);
+
+            // Ghi nhận lịch sử trừ tiền thanh toán dịch vụ
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            String currentDate = dateFormat.format(new Date());
+            RechargeHistory payHistory = new RechargeHistory(
+                username,
+                "Thanh toán dịch vụ",
+                currentDate,
+                (float) servicePrice,
+                1, // Thành công
+                "Đã thanh toán dịch vụ: " + serviceName
+            );
+            RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(payHistory);
             
             // Chuyển đến màn hình thành công
             Intent intent = new Intent(this, BookingSuccessActivity.class);
