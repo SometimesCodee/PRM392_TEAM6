@@ -32,8 +32,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        initData();
         et_username = findViewById(R.id.et_username);
         et_password = findViewById(R.id.et_password);
         tv_register = findViewById(R.id.tv_register);
@@ -69,49 +67,5 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
         Toast.makeText(getApplicationContext(),"Người dùng không tồn tại (-_-)",Toast.LENGTH_SHORT).show();
-    }
-
-    public void initData() {
-        mRechargeHistoryList = RechargeHistoryDatabase.getInstance(this).getHistoryDAO().getAllHistory();
-        mAccountList = AccountDatabase.getInstance(this).getAccountDAO().getAllAccount();
-
-        if (mRechargeHistoryList.isEmpty()) {
-            RechargeHistory rechargeHistory1 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12 11:00:00", 12000, 1, "Bạn đã nạp tiền thành công");
-            RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(rechargeHistory1);
-
-            RechargeHistory rechargeHistory2 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12 09:30:00", 100000, 0, "Bạn đã nạp tiền thất bại");
-            RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(rechargeHistory2);
-
-            RechargeHistory rechargeHistory3 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12 16:45:00", 562000, 1, "Bạn đã nạp tiền thành công");
-            RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(rechargeHistory3);
-
-            RechargeHistory rechargeHistory4 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12 10:15:00", 123000, 0, "Bạn đã nạp tiền thất bại");
-            RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(rechargeHistory4);
-
-            RechargeHistory rechargeHistory5 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12 14:20:00", 52300, 1, "Bạn đã nạp tiền thành công");
-            RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(rechargeHistory5);
-
-            RechargeHistory rechargeHistory6 = new RechargeHistory( "tunm17421", "Nạp tiền", "2023-12-12 15:30:00", 33000, 1, "Bạn đã nạp tiền thành công");
-            RechargeHistoryDatabase.getInstance(this).getHistoryDAO().addHistory(rechargeHistory6);
-            mRechargeHistoryList = RechargeHistoryDatabase.getInstance(this).getHistoryDAO().getAllHistory();
-        }
-        Log.d("TAG", "RechargeHistory: " + mRechargeHistoryList.get(0).getDescription());
-
-        if (mAccountList.isEmpty()) {
-            Account account1 = new Account("tunm17421", "123456", "tunm17421@gmail.com", "0397888035", "Nguyen Manh Tu", "Male", "2001-04-17", "Đông Anh, Hà Nội", R.drawable.avatar_1, 4900000.0f);
-            AccountDatabase.getInstance(this).getAccountDAO().addAccount(account1);
-
-            Account account2 = new Account("user2", "password2", "user2@example.com", "1234567892", "User Two", "Female", "1995-02-02", "456 Elm St, Town", R.drawable.avatar_2, 1500000.0f);
-            AccountDatabase.getInstance(this).getAccountDAO().addAccount(account2);
-
-            Account account3 = new Account("user3", "password3", "user3@example.com", "1234567893", "User Three", "Male", "1985-03-03", "789 Oak St, Village", R.drawable.avatar_3, 800000.0f);
-            AccountDatabase.getInstance(this).getAccountDAO().addAccount(account3);
-
-            Account account4 = new Account("user4", "password4", "user4@example.com", "1234567894", "User Four", "Female", "1992-04-04", "101 Pine St, Suburb", R.drawable.avatar_4, 200000.0f);
-            AccountDatabase.getInstance(this).getAccountDAO().addAccount(account4);
-
-            mAccountList = AccountDatabase.getInstance(this).getAccountDAO().getAllAccount();
-        }
-        Log.d("TAG", "Account: "+ mAccountList.get(0).getUsername());
     }
 }
