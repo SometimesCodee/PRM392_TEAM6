@@ -44,12 +44,8 @@ public class BookingHistoryAdapter extends RecyclerView.Adapter<BookingHistoryAd
         String formattedAmount = numberFormat.format(booking.getBookingPrice()) + "đ";
         holder.money.setText(formattedAmount);
         holder.status.setText(booking.getStatus());
-        holder.itemView.setOnClickListener(v -> {
-            Context context = v.getContext();
-            Intent intent = new Intent(context, BookingDetailActivity.class);
-            intent.putExtra("bookingId", booking.getBookingId());
-            context.startActivity(intent);
-        });
+        // Xóa sự kiện click vào item (không làm gì khi click)
+        holder.itemView.setOnClickListener(null);
     }
 
     @Override
