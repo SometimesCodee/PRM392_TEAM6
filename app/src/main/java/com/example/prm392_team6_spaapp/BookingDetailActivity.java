@@ -22,13 +22,7 @@ public class BookingDetailActivity extends AppCompatActivity {
             finish();
             return;
         }
-        Booking booking = null;
-        for (Booking b : BookingDatabase.getInstance(this).getBookingDAO().getAllBooking()) {
-            if (b.getBookingId() == bookingId) {
-                booking = b;
-                break;
-            }
-        }
+        Booking booking = BookingDatabase.getInstance(this).getBookingDAO().getBookingById(bookingId);
         if (booking == null) {
             finish();
             return;

@@ -1,7 +1,5 @@
 package com.example.prm392_team6_spaapp.fragment;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
-import com.example.prm392_team6_spaapp.BuildConfig;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -18,12 +16,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
+import com.example.prm392_team6_spaapp.BuildConfig;
 import com.example.prm392_team6_spaapp.R;
 import com.example.prm392_team6_spaapp.adapter.MessageAdapter;
-import com.example.prm392_team6_spaapp.model.AppDatabase;
+import com.example.prm392_team6_spaapp.dataLocal.DataLocalManager;
+import com.example.prm392_team6_spaapp.model.ChatDatabase;
 import com.example.prm392_team6_spaapp.model.ChatDao;
 import com.example.prm392_team6_spaapp.model.ChatEntity;
 import com.example.prm392_team6_spaapp.model.ChatMessage;
+import com.example.prm392_team6_spaapp.model.Service;
+import com.example.prm392_team6_spaapp.model.ServiceDatabase;
 import com.example.prm392_team6_spaapp.model.openai.ChatRequest;
 import com.example.prm392_team6_spaapp.model.openai.ChatResponse;
 import com.example.prm392_team6_spaapp.model.openai.Message;
@@ -47,12 +49,11 @@ public class ChatFragment extends Fragment {
     private List<ChatMessage> chatMessages;
     private List<Message> apiMessages;
 
-    private AppDatabase db;
+    private ChatDatabase db;
     private ChatDao chatDao;
 
     private String currentUsername;
     private String API_KEY;
-
 
     @Nullable
     @Override
@@ -61,6 +62,7 @@ public class ChatFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_chat, container, false);
         API_KEY = BuildConfig.OPENAI_API_KEY;
+
         recyclerMessages = view.findViewById(R.id.recyclerMessages);
         editMessage = view.findViewById(R.id.editMessage);
         btnSend = view.findViewById(R.id.btnSend);
@@ -72,14 +74,14 @@ public class ChatFragment extends Fragment {
         recyclerMessages.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerMessages.setAdapter(adapter);
 
-        // 👉 Lấy username từ SharedPreferences
-        currentUsername = com.example.prm392_team6_spaapp.dataLocal.DataLocalManager.getInstance().getPrefUsername();
+        currentUsername = DataLocalManager.getInstance().getPrefUsername();
 
-        // Init SQLite
-        db = Room.databaseBuilder(getContext(), AppDatabase.class, "chat_db").fallbackToDestructiveMigration().allowMainThreadQueries().build();
+        db = Room.databaseBuilder(getContext(), ChatDatabase.class, "chat_db")
+                .fallbackToDestructiveMigration()
+                .allowMainThreadQueries()
+                .build();
         chatDao = db.chatDao();
 
-        // Load lịch sử chat theo tài khoản
         List<ChatEntity> history = chatDao.getMessagesForUser(currentUsername);
         for (ChatEntity msg : history) {
             chatMessages.add(new ChatMessage(msg.message, msg.isUser));
@@ -99,21 +101,25 @@ public class ChatFragment extends Fragment {
     }
 
     private void sendMessage(String content) {
-        // Hiển thị tin nhắn người dùng
         ChatMessage userMessage = new ChatMessage(content, true);
         chatMessages.add(userMessage);
         adapter.notifyItemInserted(chatMessages.size() - 1);
-        recyclerMessages.scrollToPosition(chatMessages.size() - 1);
+        recyclerMessages.post(() -> recyclerMessages.smoothScrollToPosition(chatMessages.size() - 1));
 
-        // Lưu SQLite
-        ChatEntity userEntity = new ChatEntity(content, true, System.currentTimeMillis(), currentUsername);
-        chatDao.insert(userEntity);
+        chatDao.insert(new ChatEntity(content, true, System.currentTimeMillis(), currentUsername));
 
-        // Gửi đến OpenAI
+        // 🔥 Lấy dữ liệu dịch vụ và tạo prompt
+        List<Service> services = getServicesFromDatabase();
+        String servicePrompt = convertServiceListToPrompt(services);
+
+        // ✅ Xóa hội thoại cũ, chỉ giữ dữ liệu + câu hỏi
+        apiMessages.clear();
+        apiMessages.add(new Message("system", servicePrompt));
         apiMessages.add(new Message("user", content));
+
         ChatRequest request = new ChatRequest("gpt-3.5-turbo", apiMessages);
 
-        progressLoading.setVisibility(View.VISIBLE); // Show loading
+        progressLoading.setVisibility(View.VISIBLE);
 
         OpenAIService service = RetrofitClient.getOpenAIService();
         Call<ChatResponse> call = service.sendMessage(API_KEY, request);
@@ -128,11 +134,9 @@ public class ChatFragment extends Fragment {
 
                     chatMessages.add(new ChatMessage(botReply, false));
                     adapter.notifyItemInserted(chatMessages.size() - 1);
-                    recyclerMessages.scrollToPosition(chatMessages.size() - 1);
+                    recyclerMessages.post(() -> recyclerMessages.smoothScrollToPosition(chatMessages.size() - 1));
 
-                    // Lưu SQLite
-                    ChatEntity botEntity = new ChatEntity(botReply, false, System.currentTimeMillis(), currentUsername);
-                    chatDao.insert(botEntity);
+                    chatDao.insert(new ChatEntity(botReply, false, System.currentTimeMillis(), currentUsername));
                 }
             }
 
@@ -142,8 +146,31 @@ public class ChatFragment extends Fragment {
                 String errorText = "Lỗi kết nối đến ChatGPT";
                 chatMessages.add(new ChatMessage(errorText, false));
                 adapter.notifyItemInserted(chatMessages.size() - 1);
-                recyclerMessages.scrollToPosition(chatMessages.size() - 1);
+                recyclerMessages.post(() -> recyclerMessages.smoothScrollToPosition(chatMessages.size() - 1));
             }
         });
+    }
+
+    private List<Service> getServicesFromDatabase() {
+        return ServiceDatabase.getInstance(getContext()).getServiceDAO().getAllService();
+    }
+
+    private String convertServiceListToPrompt(List<Service> serviceList) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Bạn là một tư vấn viên spa chuyên nghiệp tại hệ thống chăm sóc sắc đẹp của chúng tôi. ")
+                .append("Nhiệm vụ của bạn là tư vấn cho khách hàng về các dịch vụ spa hiện có bên dưới. ")
+                .append("Chỉ được sử dụng thông tin trong danh sách dịch vụ này để trả lời. ")
+                .append("Không được bịa ra dịch vụ không có trong danh sách. ")
+                .append("Hãy trả lời một cách thân thiện, rõ ràng, dễ hiểu, và nếu phù hợp, có thể gợi ý thêm dịch vụ tương tự.\n\n");
+
+        sb.append("Danh sách dịch vụ spa hiện có:\n");
+        for (Service service : serviceList) {
+            sb.append("- Tên dịch vụ: ").append(service.getServiceName()).append("\n")
+                    .append("  Giá: ").append(service.getPrice()).append(" VND\n")
+                    .append("  Thời gian: ").append(service.getDuration()).append("\n")
+                    .append("  Mô tả: ").append(service.getDescription()).append("\n\n");
+        }
+
+        return sb.toString();
     }
 }

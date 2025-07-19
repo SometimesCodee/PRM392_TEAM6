@@ -8,8 +8,7 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.prm392_team6_spaapp.fragment.PhoneCateHistoryFragment;
-import com.example.prm392_team6_spaapp.fragment.RechargeHistoryFragment;
-import com.example.prm392_team6_spaapp.fragment.WithdrawHistoryFragment;
+import com.example.prm392_team6_spaapp.fragment.TransactionHistoryFragment;
 
 
 public class HistoryAdapter extends FragmentStateAdapter {
@@ -31,20 +30,18 @@ public class HistoryAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position){
             case 0:
-                return new RechargeHistoryFragment();
+                return new TransactionHistoryFragment();
             case 1:
-                return new WithdrawHistoryFragment();
-            case 2:
                 return new PhoneCateHistoryFragment();
             default:
-                return new RechargeHistoryFragment();
+                return new TransactionHistoryFragment();
         }
 
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return 2;
     }
 
 

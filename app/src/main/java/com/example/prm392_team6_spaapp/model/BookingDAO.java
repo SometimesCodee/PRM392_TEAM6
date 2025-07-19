@@ -20,4 +20,6 @@ public interface BookingDAO {
     public List<Booking> getAllBooking();
     @Query("SELECT * FROM booking WHERE username ==:username")
     public List<Booking> getAllBookingOfAccount(String username);
+    @Query("SELECT * FROM booking WHERE bookingId = :id LIMIT 1")
+    public Booking getBookingById(int id);
 }
