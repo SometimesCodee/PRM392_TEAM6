@@ -72,7 +72,7 @@ public class Account {
         return username;
     }
 
-    private void setUsername(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -80,7 +80,7 @@ public class Account {
         return password;
     }
 
-    private void setPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
@@ -88,7 +88,7 @@ public class Account {
         return email;
     }
 
-    private void setEmail(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
@@ -96,7 +96,7 @@ public class Account {
         return phoneNumber;
     }
 
-    private void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
@@ -104,7 +104,7 @@ public class Account {
         return fullName;
     }
 
-    private void setFullName(String fullName) {
+    public void setFullName(String fullName) {
         this.fullName = fullName;
     }
 
@@ -112,7 +112,7 @@ public class Account {
         return gender;
     }
 
-    private void setGender(String gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -120,7 +120,7 @@ public class Account {
         return birthDate;
     }
 
-    private void setBirthDate(String birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -128,7 +128,7 @@ public class Account {
         return address;
     }
 
-    private void setAddress(String address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -136,7 +136,8 @@ public class Account {
         return avatar;
     }
 
-    private void setAvatar(int avatar) {
+    public void setAvatar(int avatar) {
         this.avatar = avatar;
     }
+
 }
